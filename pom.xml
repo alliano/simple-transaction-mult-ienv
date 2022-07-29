@@ -102,4 +102,29 @@
 		</pluginRepository>
 	</pluginRepositories>
 
+	<!-- konfigurasi untuk multi env -->
+	<profiles>
+		<!-- untuk env development -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<activatedProperties>dev</activatedProperties>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<!-- konvigurasi untuk production -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<activatedProperties>prod</activatedProperties>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
+
+	</profiles>
+
 </project>
