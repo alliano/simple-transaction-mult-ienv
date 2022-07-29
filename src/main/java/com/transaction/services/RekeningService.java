@@ -2,19 +2,28 @@ package com.transaction.services;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.transaction.models.entities.Rekening;
 import com.transaction.models.repositories.RekeningRepository;
-
 import jakarta.transaction.Transactional;
 
 @Service
 public class RekeningService {
 
+   /**
+    * mekanisme data catching
+    * service akan meng query ke database -> menyimpan database ke dalam in memory dengan temorary yang sudah ditentukan
+    * agar saat nanti data dibutuhkan tidak meng query lagi ke databse jadi proses nya makin cepat
+    * kelemahan data caching sangat tidak rekomendasi jika data yang ingin di caching sangat dinamis
+    * untuk menggunakan cacing data kita bisa annotasi method yaang sekiranya memerlukan waktu 
+    * yang relatif lama 
+    */
    @Autowired
    private RekeningRepository rekeningRepository;
 
+   @Cacheable("transaksi")
    public Iterable<Rekening> findAll(){
       return rekeningRepository.findAll();
    }
@@ -23,6 +32,7 @@ public class RekeningService {
       return rekeningRepository.save(rekening);
    }
 
+   
    @Transactional
    public HashMap<String,String> transaction(String rekening1, String rekening2, double amount){
       Rekening pengirim = rekeningRepository.findByNoRekening(rekening1);
